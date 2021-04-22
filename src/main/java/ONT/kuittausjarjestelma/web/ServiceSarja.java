@@ -31,8 +31,6 @@ public class ServiceSarja {
 	}
 	
 
-	
-
 	public Boolean saveNotification(String msg) {
 		
 			int sarjaNum = Integer.parseInt(msg);
@@ -47,14 +45,12 @@ public class ServiceSarja {
 			try {
 				List<Sarja> sarjat = new ArrayList<>();
 				sarjat.addAll(sarjaRepository.findAll());
-				//Long sarjaId;
 				for(int i = 0; i<sarjat.size();i++) {
 					if(sarjat.get(i).getSarjaNumber()==sarjaNum && sarjat.get(i).getValidSeason().getSeasonName().equals(season)) {
 						sarjat.get(i).setStatus(true);
 						sarjat.get(i).setMsgSentDate(msgDate); //14-03-2021
 						sarjat.get(i).setMsgSentTime(msgTime); //17:28:17
 						sarjaRepository.save(sarjat.get(i));
-						LOGGER.info(msgTime, sarjat.get(i));
 						
 						return true;
 					} 				

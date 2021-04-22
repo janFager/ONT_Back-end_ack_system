@@ -14,15 +14,14 @@ import java.util.Date;
 import static java.util.Collections.emptyList;
 
 public class AuthenticationService {
-  private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
   static final long EXPIRATIONTIME = 864_000_00; // 1 day in milliseconds
-  static final String SIGNINGKEY = "SecretKeyForAckSystemKuittausjarjestelmaBussiyritykselleSecretKeyForAckSystemKuittausjarjestelmaBussiyritykselle";
+  static final String SIGNINGKEY = "U2VjcmV0S2V5S3VpdHRhdXNqYXJqZXN0ZWxtYQ==";
   static final String PREFIX = "Bearer";
+  
   static final String HEADER_STRING = "Authorization";
 
   // Add token to Authorization header
   static public void addToken(HttpServletResponse res, String username) {
-	 LOGGER.info(username + " username from AuthenticationService");
     String JwtToken = Jwts.builder().setSubject(username)
         .setExpiration(new Date(System.currentTimeMillis() 
             + EXPIRATIONTIME))
@@ -35,8 +34,6 @@ public class AuthenticationService {
   // Get token from Authorization header
   static public Authentication getAuthentication(HttpServletRequest request) {
     String token = request.getHeader(HEADER_STRING);
-    LOGGER.info(token + " THIS IS TOKEN");
-    LOGGER.info(PREFIX+" :PREFIX");
     if (token != null) {
     	try {
       String user = Jwts.parser()
@@ -45,13 +42,11 @@ public class AuthenticationService {
     		  .getBody()
     		  .getSubject();
       
-      LOGGER.info(user);
+
       if (user != null) 
-    	  LOGGER.info(user);
         return new UsernamePasswordAuthenticationToken(user, null, emptyList());
     	} catch (Exception e) {
     		System.out.println("this error " + e);
-    		LOGGER.info(e + " error");
     	}
     	
     }

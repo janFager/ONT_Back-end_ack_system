@@ -1,6 +1,7 @@
 package ONT.kuittausjarjestelma.web;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,9 +28,6 @@ public class ServiceValidSeason {
 		seasons.addAll(validSeasonRepository.findAll());
 		DateTimeFormatter myFormatObjDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		String msgDate = myDateObj.format(myFormatObjDate);
-	/*    int day = Integer.parseInt(msgDate.substring(0,2));
-	    int month = Integer.parseInt(msgDate.substring(3,5));
-	    int year = Integer.parseInt(msgDate.substring(6,10));*/
 	    String season = "";
 	    SimpleDateFormat sdformat = new SimpleDateFormat("dd-MM-yyyy");
 	    Date d1;
@@ -49,5 +47,25 @@ public class ServiceValidSeason {
 		}
 		
 		return season;
+	}
+	
+	public Integer weekDay() {
+		int index = 0;
+		LocalDateTime myDateObj = LocalDateTime.now();
+ 		DayOfWeek dayOfWeek
+        = DayOfWeek.from(myDateObj);
+ 		 int val = dayOfWeek.getValue();
+ 		 String name = dayOfWeek.name();
+ 		System.out.println(val + " " + name);
+ 		if(val == 1 || val == 2 || val == 3 || val == 4) {
+ 			return index=1;
+ 		} else if (val == 5) {
+ 			return index=2;
+ 		} else if (val == 6) {
+ 		return index=3;
+ 		} else {
+ 			return index=4;
+ 		}
+ 		
 	}
 }

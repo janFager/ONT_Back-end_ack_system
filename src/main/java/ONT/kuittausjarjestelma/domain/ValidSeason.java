@@ -3,7 +3,6 @@ package ONT.kuittausjarjestelma.domain;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,18 +12,37 @@ import javax.persistence.Table;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name="validSeason")
 public class ValidSeason extends RepresentationModel<ValidSeason>{
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
 	private String seasonName;
 	private String validFrom;
 	private String validTo;
+	
+	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "validSeason")
+	private List<Sarja> sarjas;
+
+	
+	public ValidSeason() {
+		
+	}
+	
+	public ValidSeason(String seasonName) {
+		super();
+		this.seasonName = seasonName;
+		
+	}
+	
 	
 	public ValidSeason(String seasonName, String validFrom, String validTo, List<Sarja> sarjas) {
 		super();
@@ -50,20 +68,6 @@ public class ValidSeason extends RepresentationModel<ValidSeason>{
 		this.validTo = validTo;
 	}
 
-
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "validSeason")
-	private List<Sarja> sarjas;
-
-	public ValidSeason(String seasonName) {
-		super();
-		this.seasonName = seasonName;
-		
-	}
-	
-	public ValidSeason() {
-		
-	}
 
 	public Long getId() {
 		return id;
@@ -91,7 +95,7 @@ public class ValidSeason extends RepresentationModel<ValidSeason>{
 
 	@Override
 	public String toString() {
-		return "ValidSeason [id=" + id + ", seasonName=" + seasonName + ", validFrom=" + validFrom + ", validTo="
+		return "ValidSeason [id=" + this.id + ", seasonName=" + this.seasonName + ", validFrom=" + validFrom + ", validTo="
 				+ validTo + ", sarjas=" + sarjas + "]";
 	}
 	

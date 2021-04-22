@@ -14,28 +14,31 @@ import javax.persistence.Table;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
-@Table(name="validWeekDay")
 public class ValidWeekDay extends RepresentationModel<ValidWeekDay>{
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
 	private String validWeekDayName;
 	
+	@JsonBackReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "validWeekDay")
 	private List<Sarja> sarjas;
 
+	public ValidWeekDay() {
+		
+	}
+	
 	public ValidWeekDay(String validWeekDayName) {
 		super();
 		this.validWeekDayName = validWeekDayName;
 	}
 
-	public ValidWeekDay() {
-		
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -64,7 +67,7 @@ public class ValidWeekDay extends RepresentationModel<ValidWeekDay>{
 
 	@Override
 	public String toString() {
-		return "ValidWeekDay [id=" + id + ", validWeekDayName=" + validWeekDayName + ", sarjas=" + sarjas + "]";
+		return "ValidWeekDay [id=" + this.id + ", validWeekDayName=" + this.validWeekDayName + "]";
 	}
 
 	

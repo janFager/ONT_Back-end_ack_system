@@ -22,27 +22,17 @@ import ONT.kuittausjarjestelma.web.UserDetailServiceImpl;
 
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true) //can't delete by url
+@EnableGlobalMethodSecurity(prePostEnabled = true) //enables @PreAuthorize-annotation
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
     @Autowired
     private UserDetailServiceImpl userDetailsService;	
-	
-   /* @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-        .authorizeRequests().anyRequest().authenticated()
-          .and()
-      .formLogin()
-          .defaultSuccessUrl("/")
-          .permitAll() //available for everyone
-          .and()
-      .logout()
-          .permitAll(); //available for everyone
-    } */
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http.authorizeRequests().antMatchers("/replyMessage", "/test").permitAll();
+    	
+     http.authorizeRequests().antMatchers("/replyMessage", "/test").permitAll();
      http.cors().and().authorizeRequests()
       .antMatchers(HttpMethod.POST, "/login").permitAll()
           .anyRequest().authenticated()
@@ -55,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           .addFilterBefore(new AuthenticationFilter(),
                   UsernamePasswordAuthenticationFilter.class);
      	http.csrf().disable(); //ilman tätä ei toimi POST -method in postman
-    }
+    } 
     
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

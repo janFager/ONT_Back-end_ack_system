@@ -3,8 +3,10 @@ package ONT.kuittausjarjestelma.domain;
 import java.security.Timestamp;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -12,17 +14,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import org.springframework.hateoas.RepresentationModel;
 
 
 @Entity
-@Table
 public class Sarja extends RepresentationModel<Sarja>{
 	
 	@Id
@@ -41,22 +45,15 @@ public class Sarja extends RepresentationModel<Sarja>{
 	
 	@Column(name="departureStop", nullable = false)
 	private String departureStop;
-	
-	//@JsonFormat(pattern = "dd-MM-yyyy", shape = Shape.STRING)
-	//@Temporal(TemporalType.DATE)
-	//@Column(name = "departureDate")
-	//private String departureDate;
-	
-	//@Temporal(TemporalType.TIME)
+
 	@Column(name = "departureTime")
 	private String departureTime;
 	
-	//@JsonFormat(pattern = "dd-MM-yyyy", shape = Shape.STRING)
-	//@Temporal(TemporalType.DATE)
+
 	@Column(name = "msgSentDate")
 	private String msgSentDate;
 	
-	//@Temporal(TemporalType.TIME)
+
 	@Column(name = "msgSentTime")
 	private String msgSentTime;
 	
@@ -64,12 +61,10 @@ public class Sarja extends RepresentationModel<Sarja>{
 	private boolean status;
 	
 	@ManyToOne
-    @JsonIgnore
 	@JoinColumn(name = "validSeason_id")
 	private ValidSeason validSeason;
 	
 	@ManyToOne
-    @JsonIgnore
 	@JoinColumn(name = "validWeekDay_id")
 	private ValidWeekDay validWeekDay;
 	
@@ -82,7 +77,6 @@ public class Sarja extends RepresentationModel<Sarja>{
 		this.buscom = buscom;
 		this.busNumber = busNumber;
 		this.departureStop = departureStop;
-	//	this.departureDate = departureDate;
 		this.departureTime = departureTime;
 		this.msgSentDate = msgSentDate;
 		this.msgSentTime = msgSentTime;
@@ -136,13 +130,6 @@ public class Sarja extends RepresentationModel<Sarja>{
 		this.departureStop = departureStop;
 	}
 
-	/*public String getDepartureDate() {
-		return departureDate;
-	}
-
-	public void setDepartureDate(String departureDate) {
-		this.departureDate = departureDate;
-	} */
 
 	public String getDepartureTime() {
 		return departureTime;
@@ -192,13 +179,15 @@ public class Sarja extends RepresentationModel<Sarja>{
 		this.validWeekDay = validWeekDay;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Sarja [id=" + id + ", sarjaNumber=" + sarjaNumber + ", buscom=" + buscom + ", busNumber=" + busNumber
-				+ ", departureStop=" + departureStop + ", departureTime="
-				+ departureTime + ", msgSentDate=" + msgSentDate + ", msgSentTime=" + msgSentTime + ", status=" + status
-				+ ", validSeason=" + validSeason + ", validWeekDay=" + validWeekDay + "]";
+				+ ", departureStop=" + departureStop + ", departureTime=" + departureTime + ", msgSentDate="
+				+ msgSentDate + ", msgSentTime=" + msgSentTime + ", status=" + status + ", validSeason=" + this.getValidSeason()
+				+ ", validWeekDay=" + this.getValidWeekDay() + "]";
 	}
+
+	
+	
 	
 }

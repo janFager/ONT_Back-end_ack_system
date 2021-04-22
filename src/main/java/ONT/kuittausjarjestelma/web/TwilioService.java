@@ -30,11 +30,11 @@ public class TwilioService extends HttpServlet {
     String body = request.getParameter("Body");
     String message = "Message";
     if(serviceSarja.saveNotification(body)) {
-    	message = "Kiitos! Kuittauksesi on vastaanotettu. Mukavaa työvuoroa!";
+    	message = "Kiitos! Kuittauksesi on vastaanotettu.";
     } else {
-    	message = "Valitettavasti järjestelmässä on tapahtunut virhe. Yritä uudestaan tai soita toimistolle. ";
+    	message = "Valitettavasti järjestelmässä on tapahtunut virhe. Yritä uudestaan tai soita toimistolle.";
     }
-    LOGGER.info("BODY IS HERE!" + body);
+    
 
 
     // Create a TwiML response and add our friendly message.
